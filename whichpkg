@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+if [ "$#" -ne 1 ]
+then
+	echo "Usage: whichpkg PKGFILE"
+	exit 1
+fi
+
+PKG_DIR="/boot/system/packages"
+MACHED_PKG_FILES=""
+SEARCH_FILE=$1
+
+for PKG_FILE in $PKG_DIR/*.hpkg
+do
+	PKG_CONTAINED_FILES=`package list -p $PKG_FILE`
+
+	for CONTAINED_FILE in $PKG_CONTAINED_FILES 
+	do
+		CONTAINED_FILE="/boot/system/$CONTAINED_FILE"
+		if [[ "$CONTAINED_FILE" == "$SEARCH_FILE" ]]
+		then
+			echo $PKG_FILE
+		fi
+	done
+	
+done
+
